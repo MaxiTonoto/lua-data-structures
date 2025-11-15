@@ -51,10 +51,10 @@ Returns queue's number of items.
 function Queue:__tostring()
     if self:is_empty() then return "[]" end
 
-    local items = {}
+    local items = {}   -- Get all items on a single table
     local walk = self._front
     for i = 1, #self do
-        items[#items+1] = self._data[walk]
+        items[#items+1] = tostring(self._data[walk])
         walk = (walk % #self._data) + 1 
     end
 
@@ -71,24 +71,22 @@ function Queue:_resize(amount)
     local temp = {}
     local walk = self._front
     for i = 1, amount do
+        -- copy old data's items starting from index 1
         if i <= self._size then
             temp[#temp+1] = self._data[walk]
             walk = (walk % #self._data) + 1
         else
             temp[i] = EMPTY
         end
-        
-
     end
-
     self._data = temp
     self._front = 1
-    self._rear = self._size + 1
+    self._rear = self._size + 1   -- index of the next EMPTY space
 end
 
 --[[
     x:is_empty() method
-Returns a boolean if the queue is empty.
+Returns a boolean, true if the queue is empty.
 ]]
 function Queue:is_empty()
     return #self == 0
@@ -123,11 +121,11 @@ end
 --[[
     x:enqueue(item) method
 Enqueues an item.
-Raises error if item is nil or false.
+Raises error if item is nil.
 ]]
 function Queue:enqueue(item)
     if item == nil then
-        error("enqueue() parameter missing or nil", 2)
+        error("enqueue() recieved nil", 2)
     end
     
     -- double amount of space if full
@@ -150,6 +148,11 @@ function Queue:dequeue()
         error("dequeue() on empty queue", 2)
     end
     
+    -- halve the amount of space if there are too many EMPTY spaces
+    if #self._data <= (self._size // 4) then 
+        self:_resize(#self._data // 2)
+    end
+
     local item = self._data[self._front]   -- save for later
     self._data[self._front] = EMPTY
     self._front = (self._front % #self._data) + 1
