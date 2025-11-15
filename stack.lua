@@ -63,7 +63,6 @@ Raises error if the stack is empty.
 function Stack:top()
     if self:is_empty() then
         error("top() on empty stack", 2)
-        return
     end
 
     return self._data[#self._data]
@@ -86,7 +85,6 @@ Raises error if the stack is empty.
 function Stack:pop()
     if self:is_empty() then
         error("pop() on empty stack", 2)
-        return
     end
 
     local latest_element = self._data[#self._data]
@@ -103,7 +101,6 @@ Raises error if no "element" is given.
 function Stack:push(element)
     if not element then
         error("push() parameter missing or nil", 2)
-        return
     end
 
     self._data[#self._data+1] = element
