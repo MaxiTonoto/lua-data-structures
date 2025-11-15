@@ -1,11 +1,16 @@
 --[[
     Stack class.
-Follows LIFO criteria. Uses a table for items,
-and some variables for data such as size.
+Data structure that follows the LIFO policy.
+Uses an indexed table for items.
 ]]
 
 local Stack = {}
 Stack.__index = Stack
+
+-- new method
+function Stack:new(default_items)
+    return Stack:init(default_items)
+end
 
 -- init method
 function Stack:init(default_items)
@@ -23,14 +28,13 @@ end
 Returns all stack's items as strings.
 ]]
 function Stack:__tostring()
-
+    -- empty stack
+    if self:is_empty() then return "[]" end
+    
     local items = {}
     for i = 1, #self._data do
         items[#items+1] = tostring(self._data[i])
     end
-
-    -- empty stack
-    if #items == 0 then return "[]" end
 
     return "[" .. table.concat(items, ", ") .. "]"
 end
@@ -53,7 +57,7 @@ end
 
 --[[
     x:top() method
-Returns stack's top item. 
+Returns stack's top item without removing it. 
 Raises error if the stack is empty.
 ]]
 function Stack:top()
@@ -67,7 +71,7 @@ end
 
 --[[
     x:peek() method
-Returns stack's top item. 
+Returns stack's top item without removing it. 
 Raises error if the stack is empty.
 ]]
 function Stack:peek()
