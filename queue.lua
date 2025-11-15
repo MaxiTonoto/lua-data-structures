@@ -6,7 +6,11 @@ and auxiliary variables for data such as size.
 ]]
 
 local Queue = {}
+local DEFAULT_CAPACITY = 10
 Queue.__index = Queue
+
+-- AUXILIARY EMPTY ELEMENT (can't use nil)
+Queue.EMPTY = {}
 
 -- new function
 function Queue:new(default_items)
@@ -67,4 +71,29 @@ end
 
 --[[
     x:enqueue(item) method
+Enqueues an item in the queue.
+Raises error if item is nil or false.
 ]]
+function Queue:enqueue(item)
+    if not item then
+        error("enqueue() parameter missing or nil", 2)
+    end
+
+    self._data[self._rear] = item
+    self._size = self._size + 1
+end
+
+--[[
+    x:dequeue() method
+Returns the oldest item enqueued.
+Raises error if queue is empty.
+]]
+function Queue:dequeue()
+    if self:is_empty() then
+        error("dequeue() on empty queue", 2)
+    end
+
+    self._data[self._rear] = item
+    self._size = self._size - 1
+end
+
