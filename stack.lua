@@ -1,34 +1,61 @@
+--[[
+    Stack class.
+Follows LIFO criteria. Uses a table for items,
+and some variables for data such as size.
+]]
 
 local Stack = {}
 Stack.__index = Stack
 
+-- init method
 function Stack:init(default_items)
     local obj = {}
     setmetatable(obj, Stack)
 
+    -- allows no params
     obj._data = default_items or {}
 
     return obj
 end
 
+--[[
+    tostring(x) method
+Returns all stack's items as strings.
+]]
 function Stack:__tostring()
+
     local items = {}
-    for _, v in ipairs(self._data) do
-        items[#items+1] = tostring(v)
+    for i = 1, #self._data do
+        items[#items+1] = tostring(self._data[i])
     end
 
-    items = table.concat(items, ", ")
-    return "Stack[" .. items .. "]"
+    -- empty stack
+    if #items == 0 then return "[]" end
+
+    return "[" .. table.concat(items, ", ") .. "]"
 end
 
+--[[
+    #x method
+Returns stack's number of items.
+]]
 function Stack:__len()
     return #self._data
 end
 
+--[[
+    x:is_empty() method
+Returns a boolean if the stack is empty.
+]]
 function Stack:is_empty()
     return #self == 0
 end
 
+--[[
+    x:top() method
+Returns stack's top item. 
+Raises error if the stack is empty.
+]]
 function Stack:top()
     if self:is_empty() then
         error("top() on empty stack", 2)
@@ -38,10 +65,20 @@ function Stack:top()
     return self._data[#self._data]
 end
 
+--[[
+    x:peek() method
+Returns stack's top item. 
+Raises error if the stack is empty.
+]]
 function Stack:peek()
     return self:top()
 end
 
+--[[
+    x:pop() method
+Removes the last item pushed onto the stack.
+Raises error if the stack is empty.
+]]
 function Stack:pop()
     if self:is_empty() then
         error("pop() on empty stack", 2)
@@ -53,6 +90,12 @@ function Stack:pop()
     return latest_element
 end
 
+--[[
+    x:push(element) method
+Pushes an item onto the stack.
+Recieves parameter "element" with the item to push.
+Raises error if no "element" is given.
+]]
 function Stack:push(element)
     if not element then
         error("push() parameter missing or nil", 2)
@@ -62,3 +105,14 @@ function Stack:push(element)
     self._data[#self._data+1] = element
 end
 
+--[[
+    x:clear() method
+Clears all items on the stack.
+]]
+function Stack:clear()
+    for i = 1, #self._data do
+        self._data[i] = nil
+    end
+end
+
+return Stack
