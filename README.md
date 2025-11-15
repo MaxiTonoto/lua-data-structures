@@ -4,7 +4,7 @@ Library containing data structures implemented 100% in the Lua programming langu
 The project follows Python's naming conventions:  
 - **snake_case**: functions, variables, modules.  
 - **SCREAMING_SNAKE_CASE**: constants.  
-- PascalCase: classes.  
+- **PascalCase**: classes.  
 
 ## Implemented ✅
 - [X] Stack
