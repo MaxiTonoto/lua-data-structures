@@ -111,9 +111,7 @@ end
 Clears all items on the stack.
 ]]
 function Stack:clear()
-    for i = 1, #self._data do
-        self._data[i] = nil
-    end
+    self._data = {}
 end
 
 return Stack
