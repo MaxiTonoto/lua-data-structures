@@ -2,7 +2,7 @@ package.path = package.path .. ";../?.lua"
 local Stack = require("stack")  -- import Stack
 
 function main()
-    my_stack = Stack:init()
+    my_stack = Stack:new()
     print("Created stack: my_stack")
     print("Pushing numbers 1 to 5")
     for i = 1, 5 do
@@ -16,7 +16,8 @@ function main()
     print("tostring(my_stack)=" .. tostring(my_stack))
     print("my_stack:is_empty()=" .. tostring(my_stack:is_empty()))
     print("my_stack:clear()")
-    print("my_stack=" .. tostring(my_stack))
+    my_stack:clear()
+    print("tostring(my_stack)=" .. tostring(my_stack))
     print("my_stack:is_empty()=" .. tostring(my_stack:is_empty()))
 end
 
