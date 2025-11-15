@@ -51,16 +51,40 @@ Returns queue's number of items.
 function Queue:__tostring()
     if self:is_empty() then return "[]" end
 
-    items = {}
-    walk = self._front
+    local items = {}
+    local walk = self._front
     for i = 1, #self do
         items[#items+1] = self._data[walk]
-        walk = (walk + 1) % #self._data
+        walk = (walk % #self._data) + 1 
     end
 
     return "[" .. table.concat(items, ", ") .. "]"
 end
 
+--[[
+    x:_resize(amount) method
+Helper method that sets the amout of EMPTY spaces available.
+This does not increase x._size
+It's O(n)
+]]
+function Queue:_resize(amount)
+    local temp = {}
+    local walk = self._front
+    for i = 1, amount do
+        if i <= self._size then
+            temp[#temp+1] = self._data[walk]
+            walk = (walk % #self._data) + 1
+        else
+            temp[i] = EMPTY
+        end
+        
+
+    end
+
+    self._data = temp
+    self._front = 1
+    self._rear = self._size + 1
+end
 
 --[[
     x:is_empty() method
@@ -76,8 +100,8 @@ Returns queue's oldest element without removing it.
 Raises error if the queue is empty.
 ]]
 function Queue:first()
-    if self.is_empty() then
-        error("pop() on empty stack", 2)
+    if self:is_empty() then
+        error("first() on empty queue", 2)
     end
     
     return self._data[self._front]
@@ -89,21 +113,31 @@ Returns queue's oldest element without removing it.
 Raises error if the queue is empty.
 ]]
 function Queue:front()
+    if self:is_empty() then
+        error("front() on empty queue", 2)
+    end
+
     return self:first()
 end
 
 --[[
     x:enqueue(item) method
-Enqueues an item in the queue.
+Enqueues an item.
 Raises error if item is nil or false.
 ]]
 function Queue:enqueue(item)
-    if not item then
+    if item == nil then
         error("enqueue() parameter missing or nil", 2)
     end
-    self._size = self._size + 1
+    
+    -- double amount of space if full
+    if self._size == #self._data then 
+        self:_resize(#self._data * 2)
+    end
+
     self._data[self._rear] = item
-    self._rear = (self._rear + 1) % #self._data
+    self._rear = (self._rear % #self._data) + 1 
+    self._size = self._size + 1
 end
 
 --[[
@@ -115,12 +149,27 @@ function Queue:dequeue()
     if self:is_empty() then
         error("dequeue() on empty queue", 2)
     end
-    self._size = self._size - 1
-    item = self._data[self._front]   -- save for later
+    
+    local item = self._data[self._front]   -- save for later
     self._data[self._front] = EMPTY
-    self._front = (self._front + 1) % #self._data
+    self._front = (self._front % #self._data) + 1
+    self._size = self._size - 1
 
     return item   -- this is later
+end
+
+--[[
+    x:clear() method
+Clears all items on the queue.
+]]
+function Queue:clear()
+    self._data = {}
+    for i = 1, DEFAULT_CAPACITY do
+        self._data[i] = EMPTY
+    end
+    self._front = 1
+    self._rear = 1
+    self._size = 0
 end
 
 return Queue
