@@ -8,17 +8,17 @@ local Stack = {}
 Stack.__index = Stack
 
 -- new method
-function Stack:new(default_items)
-    return Stack:init(default_items)
+function Stack:new()
+    return Stack:init()
 end
 
 -- init method
-function Stack:init(default_items)
+function Stack:init()
     local obj = {}
     setmetatable(obj, Stack)
 
     -- allows no params
-    obj._data = default_items or {}
+    obj._data = {}
 
     return obj
 end
