@@ -10,23 +10,28 @@ local DEFAULT_CAPACITY = 10
 Queue.__index = Queue
 
 -- AUXILIARY EMPTY ELEMENT (can't use nil)
-Queue.EMPTY = {}
+local EMPTY = {}
+setmetatable(EMPTY, {
+    __tostring = function() return "EMPTY" end
+})
 
 -- new function
-function Queue:new(default_items)
-    return Queue:init(default_items)
+function Queue:new()
+    return Queue:init()
 end
 
 -- init function
-function Queue:init(default_items)
+function Queue:init()
     local obj = {}
     setmetatable(obj, Queue)
 
-    -- allows no params
-    obj._data = default_items or {}
+    obj._data = {}
+    for i = 1, DEFAULT_CAPACITY do
+        obj._data[i] = EMPTY
+    end
     obj._front = 1
-    obj._rear = #default_items or 1
-    obj._size = #default_items or 0
+    obj._rear = 1
+    obj._size = 0
 
     return obj
 end
@@ -38,6 +43,24 @@ Returns queue's number of items.
 function Queue:__len()
     return self._size
 end
+
+--[[
+    tostring(x) method
+Returns queue's number of items.
+]]
+function Queue:__tostring()
+    if self:is_empty() then return "[]" end
+
+    items = {}
+    walk = self._front
+    for i = 1, #self do
+        items[#items+1] = self._data[walk]
+        walk = (walk + 1) % #self._data
+    end
+
+    return "[" .. table.concat(items, ", ") .. "]"
+end
+
 
 --[[
     x:is_empty() method
@@ -78,9 +101,9 @@ function Queue:enqueue(item)
     if not item then
         error("enqueue() parameter missing or nil", 2)
     end
-
-    self._data[self._rear] = item
     self._size = self._size + 1
+    self._data[self._rear] = item
+    self._rear = (self._rear + 1) % #self._data
 end
 
 --[[
@@ -92,8 +115,12 @@ function Queue:dequeue()
     if self:is_empty() then
         error("dequeue() on empty queue", 2)
     end
-
-    self._data[self._rear] = item
     self._size = self._size - 1
+    item = self._data[self._front]   -- save for later
+    self._data[self._front] = EMPTY
+    self._front = (self._front + 1) % #self._data
+
+    return item   -- this is later
 end
 
+return Queue
