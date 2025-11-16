@@ -108,7 +108,7 @@ Raises error if deque is empty.
 ]]
 function Deque:first()
     if self:is_empty() then
-        error("first() on empty queue", 2)
+        error("first() on empty deque", 2)
     end
 
     return self._data[self._head]
@@ -121,7 +121,7 @@ Raises error if deque is empty.
 ]]
 function Deque:last()
     if self:is_empty() then
-        error("last() on empty queue", 2)
+        error("last() on empty deque", 2)
     end
     return self._data[((self._tail - 2) % #self._data) + 1]
 end
