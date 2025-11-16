@@ -26,7 +26,7 @@ function main()
 
     print("\nPush 1,000,000 items test:")
     local new_stack = Stack:new()
-    push_million_items = Tests.time_test(
+    local push_million_items = Tests.time_test(
         function()
             for i = 1, 1000000 do
                 new_stack:push(i)
@@ -34,9 +34,8 @@ function main()
         end
     )
     print("Elapsed time: " .. push_million_items .. " seconds")
-
     print("\nPop 1,000,000 items test:")
-    pop_million_items = Tests.time_test(
+    local pop_million_items = Tests.time_test(
         function()
             for i = 1, 1000000 do
                 new_stack:pop()

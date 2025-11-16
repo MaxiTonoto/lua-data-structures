@@ -1,6 +1,4 @@
--- Import same dir modules before changing package path
 local Tests = require("tests")   -- common tests
-
 package.path = package.path .. ";../?.lua;"
 local Queue = require("queue")  -- import Queue
 
@@ -34,7 +32,7 @@ function main()
 
     print("\nQueue 1,000,000 items test:")
     local new_queue = Queue:new()
-    enqueue_million_items = Tests.time_test(
+    local enqueue_million_items = Tests.time_test(
         function()
            for i = 1, 1000000 do
                 new_queue:enqueue(i)
@@ -42,9 +40,9 @@ function main()
         end
     )
     print("Elapsed time: " .. enqueue_million_items .. " seconds")
-
+    
     print("\nDequeue 1,000,000 items test:")
-    dequeue_million_items = Tests.time_test(
+    local dequeue_million_items = Tests.time_test(
         function()
             for i = 1, 1000000 do
                 new_queue:dequeue(i)
