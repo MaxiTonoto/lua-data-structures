@@ -45,6 +45,14 @@ function Queue:__len()
 end
 
 --[[
+    x:size() method
+Returns queue's number of items.
+]]
+function Queue:size()
+    return #self
+end
+
+--[[
     tostring(x) method
 Returns queue's number of items.
 ]]
@@ -149,7 +157,7 @@ function Queue:dequeue()
     end
     
     -- halve the amount of space if there are too many EMPTY spaces
-    if #self._data <= (self._size // 4) then 
+    if #self._data >= (self._size * 8) then 
         self:_resize(#self._data // 2)
     end
 
