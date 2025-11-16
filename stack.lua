@@ -48,6 +48,14 @@ function Stack:__len()
 end
 
 --[[
+    x:size() method
+Returns stack's number of items.
+]]
+function Stack:size()
+    return #self._data
+end
+
+--[[
     x:is_empty() method
 Returns a boolean if the stack is empty.
 ]]
