@@ -10,7 +10,7 @@ The project follows Python's naming conventions:
 - [X] Stack
 - [X] Queue
 - [X] Double-Ended Queue (Deque)
-- [ ] Steque
+- [X] Steque
 - [ ] Multiway Tree
 - [ ] Binary Tree
 - [ ] Heap
