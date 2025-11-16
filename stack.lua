@@ -52,7 +52,7 @@ end
 Returns stack's number of items.
 ]]
 function Stack:size()
-    return #self._data
+    return #self
 end
 
 --[[
