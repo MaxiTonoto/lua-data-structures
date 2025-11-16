@@ -1,14 +1,14 @@
 --[[
-    Deque class.
-Data structure that combines can
-add/remove items at the head/tail.
+    Steque class.
+Data structure that combines STACK and QUEUE.
+Can push, pop and enqueue, but not dequeue,
 Uses a circular indexed table for items
 and auxiliary variables for data such as size.
 ]]
 
-local Deque = {}
+local Steque = {}
 local DEFAULT_CAPACITY = 10
-Deque.__index = Deque
+Steque.__index = Steque
 
 -- AUXILIARY EMPTY ELEMENT (can't use nil)
 local EMPTY = {}
@@ -17,14 +17,14 @@ setmetatable(EMPTY, {
 })
 
 -- new function
-function Deque:new()
-    return Deque:init()
+function Steque:new()
+    return Steque:init()
 end
 
 -- init function
-function Deque:init()
+function Steque:init()
     local obj = {}
-    setmetatable(obj, Deque)
+    setmetatable(obj, Steque)
 
     obj._data = {}
     for i = 1, DEFAULT_CAPACITY do
@@ -39,25 +39,25 @@ end
 
 --[[
     #x method
-Returns deque's number of items.
+Returns steque's number of items.
 ]]
-function Deque:__len()
+function Steque:__len()
     return self._size
 end
 
 --[[
     x:size() method
-Returns Deque's number of items.
+Returns Steque's number of items.
 ]]
-function Deque:size()
+function Steque:size()
     return #self
 end
 
 --[[
     tostring(x) method
-Returns Deque's string representation.
+Returns steque's string representation.
 ]]
-function Deque:__tostring()
+function Steque:__tostring()
     if self:is_empty() then return "[]" end
 
     local items = {}
@@ -72,9 +72,9 @@ end
 
 --[[
     x:is_empty() method
-Returns a boolean, true if the deque is empty.
+Returns a boolean, true if the steque is empty.
 ]]
-function Deque:is_empty()
+function Steque:is_empty()
     return #self == 0
 end
 
@@ -84,11 +84,10 @@ Helper method that sets the amout of EMPTY spaces available.
 This does not increase x._size
 It's O(n)
 ]]
-function Deque:_resize(amount)
+function Steque:_resize(amount)
     local temp = {}
     local walk = self._head
     for i = 1, amount do
-        -- copy old data's items starting from index 1
         if i <= self._size then
             temp[#temp+1] = self._data[walk]
             walk = (walk % #self._data) + 1
@@ -98,47 +97,32 @@ function Deque:_resize(amount)
     end
     self._data = temp
     self._head = 1
-    self._tail = self._size + 1   -- index of the next EMPTY space
+    self._tail = self._size + 1
 end
 
 --[[
-    x:first() method
-Returns the item at the head of the Deque
+    x:peek() method
+Returns the item at the tail of the steque
 without removing it.
-Raises error if deque is empty.
+Raises error if steque is empty.
 ]]
-function Deque:first()
+function Steque:peek()
     if self:is_empty() then
-        error("first() on empty deque", 2)
-    end
-
-    return self._data[self._head]
-end
-
---[[
-    x:last() method
-Returns the item at the tail of the Deque
-without removing it.
-Raises error if deque is empty.
-]]
-function Deque:last()
-    if self:is_empty() then
-        error("last() on empty deque", 2)
+        error("peek() on empty steque", 2)
     end
     return self._data[((self._tail - 2) % #self._data) + 1]
 end
 
 --[[
-    x:add_first(item) method
-Adds an item to the head.
+    x:enqueue(item) method
+Enqueues an item to the head.
 Raises error if item is nil.
 ]]
-function Deque:add_first(item)
+function Steque:enqueue(item)
     if item == nil then
-        error("add_first() recieved nil", 2)
+        error("enqueue() recieved nil", 2)
     end
     
-    -- double amount of space if full
     if self._size == #self._data then 
         self:_resize(#self._data * 2)
     end
@@ -149,16 +133,15 @@ function Deque:add_first(item)
 end
 
 --[[
-    x:add_last(item) method
-Adds an item to the tail.
+    x:push(item) method
+Pushes an item to the tail.
 Raises error if item is nil.
 ]]
-function Deque:add_last(item)
+function Steque:push(item)
     if item == nil then
-        error("add_first() recieved nil", 2)
+        error("push() recieved nil", 2)
     end
     
-    -- double amount of space if full
     if self._size == #self._data then 
         self:_resize(#self._data * 2)
     end
@@ -169,32 +152,13 @@ function Deque:add_last(item)
 end
 
 --[[
-    x:delete_first() method
-Returns and removes the "left-most" element.
-Raises error if deque is empty.
-]]
-function Deque:delete_first()
-    if self:is_empty() then
-        error("delete_first() on empty deque", 2)
-    end
-
-    local item = self._data[self._head]
-    self._data[self._head] = EMPTY
-    self._head = (self._head % #self._data) + 1
-
-    self._size = self._size - 1
-    
-    return item
-end
-
---[[
-    x:delete_last() method
+    x:pop() method
 Returns and removes the "right-most" element.
-Raises error if deque is empty.
+Raises error if steque is empty.
 ]]
-function Deque:delete_last()
+function Steque:pop()
     if self:is_empty() then
-        error("delete_last() on empty deque", 2)
+        error("pop() on empty steque", 2)
     end
 
     local item = self._data[((self._tail - 2) % #self._data) + 1]
@@ -208,9 +172,9 @@ end
 
 --[[
     x:clear() method
-Clears all items on the deque.
+Clears all items on the steque.
 ]]
-function Deque:clear()
+function Steque:clear()
     self._data = {}
     for i = 1, DEFAULT_CAPACITY do
         self._data[i] = EMPTY
@@ -220,4 +184,4 @@ function Deque:clear()
     self._size = 0
 end
 
-return Deque
+return Steque
