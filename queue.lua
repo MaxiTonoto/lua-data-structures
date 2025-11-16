@@ -54,7 +54,7 @@ end
 
 --[[
     tostring(x) method
-Returns queue's number of items.
+Returns queue's string representation.
 ]]
 function Queue:__tostring()
     if self:is_empty() then return "[]" end
