@@ -9,7 +9,7 @@ The project follows Python's naming conventions:
 ## Implemented ✅
 - [X] Stack
 - [X] Queue
-- [ ] Double-Ended Queue (Deque)
+- [X] Double-Ended Queue (Deque)
 - [ ] Priority Queue
 - [ ] Steque
 - [ ] Singly Linked List
