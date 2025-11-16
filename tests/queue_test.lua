@@ -1,5 +1,9 @@
-package.path = package.path .. ";../?.lua"
+-- Import same dir modules before changing package path
+local Tests = require("tests")   -- common tests
+
+package.path = package.path .. ";../?.lua;"
 local Queue = require("queue")  -- import Queue
+
 
 function main()
     my_queue = Queue:new()
@@ -29,26 +33,29 @@ function main()
     print("#my_queue=" .. #my_queue)
 
     print("\nQueue 1,000,000 items test:")
-    local start_time1 = os.clock()
-    local new_queue1 = Queue:new()
-    for i = 1, 1000000 do
-        new_queue1:enqueue(i)
-    end
-    local end_time1 = os.clock()
-    local elapsed_time1 = end_time1 - start_time1
-    print("Elapsed time: " .. elapsed_time1 .. " seconds")
+    local new_queue = Queue:new()
+    enqueue_million_items = Tests.time_test(
+        function()
+           for i = 1, 1000000 do
+                new_queue:enqueue(i)
+            end 
+        end
+    )
+    print("Elapsed time: " .. enqueue_million_items .. " seconds")
 
     print("\nDequeue 1,000,000 items test:")
-    local start_time2 = os.clock()
-    for i = 1, 1000000 do
-        new_queue1:dequeue(i)
-    end
-    local end_time2 = os.clock()
-    local elapsed_time2 = end_time2 - start_time2
-    print("Elapsed time: " .. elapsed_time2 .. " seconds")
+    dequeue_million_items = Tests.time_test(
+        function()
+            for i = 1, 1000000 do
+                new_queue:dequeue(i)
+            end
+        end
+    )
+    print("Elapsed time: " .. dequeue_million_items .. " seconds")
 
-    print("\nTotal time to enqueue and dequeue 1,000,000 items: "
-            .. elapsed_time1 + elapsed_time2 .. " seconds")
+    print("\nTotal time to enqueue & dequeue 1,000,000 items: "
+        .. enqueue_million_items
+        + dequeue_million_items .. " seconds")
 end
 
 if ... == nil then

@@ -1,5 +1,9 @@
+-- Import same dir modules before changing package path
+local Tests = require("tests")   -- common tests
+
 package.path = package.path .. ";../?.lua"
 local Stack = require("stack")  -- import Stack
+
 
 function main()
     my_stack = Stack:new()
@@ -21,26 +25,28 @@ function main()
     print("my_stack:is_empty()=" .. tostring(my_stack:is_empty()))
 
     print("\nPush 1,000,000 items test:")
-    local start_time1 = os.clock()
     local new_stack = Stack:new()
-    for i = 1, 1000000 do
-        new_stack:push(i)
-    end
-    local end_time1 = os.clock()
-    local elapsed_time1 = end_time1 - start_time1
-    print("Elapsed time: " .. elapsed_time1 .. " seconds")
+    push_million_items = Tests.time_test(
+        function()
+            for i = 1, 1000000 do
+                new_stack:push(i)
+            end
+        end
+    )
+    print("Elapsed time: " .. push_million_items .. " seconds")
 
     print("\nPop 1,000,000 items test:")
-    local start_time2 = os.clock()
-    for i = 1, 1000000 do
-        new_stack:pop()
-    end
-    local end_time2 = os.clock()
-    local elapsed_time2 = end_time2 - start_time2
-    print("Elapsed time: " .. elapsed_time2 .. " seconds")
-
+    pop_million_items = Tests.time_test(
+        function()
+            for i = 1, 1000000 do
+                new_stack:pop()
+            end
+        end
+    )
+    print("Elapsed time: " .. pop_million_items .. " seconds")
+    
     print("\nTotal time to push and pop 1,000,000 items: "
-            .. elapsed_time1 + elapsed_time2 .. " seconds")
+        .. push_million_items + pop_million_items .. " seconds")
 end
 
 -- this only executes if the current module was executed
