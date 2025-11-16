@@ -1,7 +1,7 @@
 --[[
     Deque class.
-Data structure that combines STACK and QUEUE.
-Can add/remove items at the head/tail.
+Data structure that combines can
+add/remove items at the head/tail.
 Uses a circular indexed table for items
 and auxiliary variables for data such as size.
 ]]
