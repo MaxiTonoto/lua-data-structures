@@ -58,7 +58,16 @@ end
 Returns Deque's string representation.
 ]]
 function Deque:__tostring()
-    error("Deque tostring() not implemented", 2)
+    if self:is_empty() then return "[]" end
+
+    local items = {}
+    local walk = self._head
+    for i = 1, #self do
+        items[#items+1] = tostring(self._data[walk])
+        walk = (walk % #self._data) + 1 
+    end
+
+    return "[" .. table.concat(items, ", ") .. "]"
 end
 
 --[[
@@ -157,12 +166,56 @@ function Deque:add_last(item)
     self._size = self._size + 1
 end
 
+--[[
+    x:delete_first() method
+Returns and removes the "left-most" element.
+Raises error if deque is empty.
+]]
 function Deque:delete_first()
+    if self:is_empty() then
+        error("delete_first() on empty deque", 2)
+    end
+
+    local item = self._data[self._head]
+    self._data[self._head] = EMPTY
+    self._head = (self._head % #self._data) + 1
+
+    self._size = self._size - 1
     
+    return item
 end
 
+--[[
+    x:delete_last() method
+Returns and removes the "right-most" element.
+Raises error if deque is empty.
+]]
 function Deque:delete_last()
+    if self:is_empty() then
+        error("delete_last() on empty deque", 2)
+    end
 
+    local item = self._data[((self._tail - 2) % #self._data) + 1]
+    self._data[((self._tail - 2) % #self._data) + 1] = EMPTY
+    self._tail = ((self._tail - 2) % #self._data) + 1
+
+    self._size = self._size - 1
+    
+    return item
+end
+
+--[[
+    x:clear() method
+Clears all items on the deque.
+]]
+function Deque:clear()
+    self._data = {}
+    for i = 1, DEFAULT_CAPACITY do
+        self._data[i] = EMPTY
+    end
+    self._head = 1
+    self._tail = 1
+    self._size = 0
 end
 
 return Deque

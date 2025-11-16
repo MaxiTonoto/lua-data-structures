@@ -148,7 +148,7 @@ end
 
 --[[
     x:dequeue() method
-Returns the oldest item enqueued.
+Returns and removes the oldest item enqueued.
 Raises error if queue is empty.
 ]]
 function Queue:dequeue()
