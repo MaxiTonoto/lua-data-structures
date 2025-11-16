@@ -8,7 +8,7 @@ The project follows Python's naming conventions:
 
 ## Implemented ✅
 - [X] Stack
-- [ ] Queue
+- [X] Queue
 - [ ] Double-Ended Queue (Deque)
 - [ ] Priority Queue
 - [ ] Steque
