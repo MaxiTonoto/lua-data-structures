@@ -178,6 +178,10 @@ function Deque:delete_first()
         error("delete_first() on empty deque", 2)
     end
 
+    if #self._data >= (self._size * 8) then 
+        self:_resize(math.floor(#self._data / 2))
+    end
+
     local item = self._data[self._head]
     self._data[self._head] = EMPTY
     self._head = (self._head % #self._data) + 1
@@ -195,6 +199,10 @@ Raises error if deque is empty.
 function Deque:delete_last()
     if self:is_empty() then
         error("delete_last() on empty deque", 2)
+    end
+
+    if #self._data >= (self._size * 8) then 
+        self:_resize(math.floor(#self._data / 2))
     end
 
     local item = self._data[((self._tail - 2) % #self._data) + 1]

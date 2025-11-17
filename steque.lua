@@ -161,6 +161,10 @@ function Steque:pop()
         error("pop() on empty steque", 2)
     end
 
+    if #self._data >= (self._size * 8) then 
+        self:_resize(math.floor(#self._data / 2))
+    end
+
     local item = self._data[((self._tail - 2) % #self._data) + 1]
     self._data[((self._tail - 2) % #self._data) + 1] = EMPTY
     self._tail = ((self._tail - 2) % #self._data) + 1
