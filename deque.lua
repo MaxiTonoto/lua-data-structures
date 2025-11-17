@@ -62,7 +62,7 @@ function Deque:__tostring()
 
     local items = {}
     local walk = self._head
-    for i = 1, #self do
+    for _ = 1, #self do
         items[#items+1] = tostring(self._data[walk])
         walk = (walk % #self._data) + 1 
     end

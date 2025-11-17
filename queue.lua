@@ -61,7 +61,7 @@ function Queue:__tostring()
 
     local items = {}   -- Get all items on a single table
     local walk = self._front
-    for i = 1, #self do
+    for _ = 1, #self do
         items[#items+1] = tostring(self._data[walk])
         walk = (walk % #self._data) + 1 
     end
@@ -158,7 +158,7 @@ function Queue:dequeue()
     
     -- halve the amount of space if there are too many EMPTY spaces
     if #self._data >= (self._size * 8) then 
-        self:_resize(#self._data // 2)
+        self:_resize(math.floor(#self._data / 2))
     end
 
     local item = self._data[self._front]   -- save for later
