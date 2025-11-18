@@ -11,7 +11,7 @@ The project follows Python's naming conventions:
 - [X] Queue
 - [X] Double-Ended Queue (Deque)
 - [X] Steque
-- [ ] Multiway Tree
+- [X] Multiway Tree
 - [ ] Binary Tree
 - [ ] Heap
 - [ ] Binary Search Tree
